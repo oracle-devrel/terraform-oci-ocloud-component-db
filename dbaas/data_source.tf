@@ -15,3 +15,13 @@ data "terraform_remote_state" "external_stack_remote_state" {
 data oci_identity_availability_domains "ADs" {
   compartment_id = var.tenancy_ocid
 }
+
+# In case a DBCS instance is installed into an existing subnet we will use the attached bastion service
+data "oci_bastion_bastions" "db_bastions" {
+    compartment_id = local.db_compartment_id
+    bastion_lifecycle_state = "ACTIVE"
+    filter {
+        name   = "target_subnet_id"
+        values = [local.db_subnet_id]
+  }
+}

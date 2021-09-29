@@ -33,6 +33,8 @@ locals {
     db_system_db_home_database_db_backup_config_auto_backup_enabled = var.deployment_type == "Fast Provisioning" ? false : var.deployment_type == "Fast Provisioning" || var.deployment_type == "Cluster" ? true : var.db_system_db_home_database_db_backup_config_auto_backup_enabled
     # database nodes in the same subnet may not use the same hostname prefix. Adding the project label makes it unique to some extent
     db_system_hostname = format("%s%s",var.db_system_hostname,var.project)
+    # In case a DBCS instance is installed into an existing subnet we will use the existing bastion service to attach the sessions
+    db_bastion_id = local.create_subnet == 1 ? module.db_domain[0].bastion.id : length(data.oci_bastion_bastions.db_bastions.bastions) > 0 ? data.oci_bastion_bastions.db_bastions.bastions[0].id : null
 }
 
 
