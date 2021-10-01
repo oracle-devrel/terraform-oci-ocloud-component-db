@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 # In order to create bastion sessions query dbnodes and its ip addresses
 data "oci_database_db_nodes" "dbaas_db_nodes" {
     compartment_id = local.db_compartment_id
@@ -49,6 +52,23 @@ resource "oci_bastion_session" "sqlnet" {
     target_resource_private_ip_address         = data.oci_core_private_ips.db_private_ips_by_vnic[count.index].private_ips[0].ip_address
   }
   display_name                                 = "${data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[count.index].hostname}_sqlnet"
+  key_type                                     = "PUB"
+  session_ttl_in_seconds                       = 1800
+}
+
+resource "oci_bastion_session" "em" {
+  count = local.db_system_node_count
+  bastion_id                                   = local.db_bastion_id
+  key_details {
+    public_key_content                         = var.db_system_ssh_public_keys
+  }
+  target_resource_details {
+    session_type                               = "PORT_FORWARDING"
+    target_resource_id                         = ""
+    target_resource_port                       = 5500
+    target_resource_private_ip_address         = data.oci_core_private_ips.db_private_ips_by_vnic[count.index].private_ips[0].ip_address
+  }
+  display_name                                 = "${data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[count.index].hostname}_em"
   key_type                                     = "PUB"
   session_ttl_in_seconds                       = 1800
 }

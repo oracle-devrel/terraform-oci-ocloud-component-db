@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 # Pull the state file of the existing Resource Manager stack (the network stack) into this context
 data "oci_resourcemanager_stack_tf_state" "stack1_tf_state" {
   stack_id   = "${var.stack_id}"

@@ -32,7 +32,8 @@ module "db_domain" {
       ["ssh",   data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere,  22,  22], 
       ["http",  data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere,  80,  80], 
       ["https", data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere, 443, 443],
-      ["tcp", data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere, 1521, 1522]
+      ["tcp", data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere, 1521, 1522],
+      ["tcp", data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere, 5500, 5500]
     ]
   }
 }

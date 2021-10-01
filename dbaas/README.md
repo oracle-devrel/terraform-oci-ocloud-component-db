@@ -1,23 +1,27 @@
-# Database Infrastructure
-
-# Virtual Machine Database Systems
+# Database Cloud Service on VM
 (Source: [OCI documentation] (https://docs.oracle.com/en-us/iaas/Content/Database/Concepts/overview.htm))
 
-Oracle Infrastructure Cloud offers installation of DB system on Bare Metal, VM and Exadata which includes the hardware, storage software, and networking configuration required to run Oracle Databases in the Oracle cloud.
+Oracle Infrastructure Cloud offers installation of DB system on VM (DBCS) and Exadata (ExaCS) which includes the hardware, storage software, and networking configuration required to run Oracle Databases in the Oracle cloud.
 
-The following usecase describes how to launch an DB System on VM through an Oracle Resource Management stack.
+The following use case describes how to provision a DB System on VM through an Oracle Resource Management stack
 
-## Database as a Service on VM Stack
+
+## Database Cloud Service on VM Stack
 
 ![Database System](docs/images/database_sys_vm.png "Database System Diagram")
 
-Oracle Cloud Infrastructure provides single-node DB systems on virtual machines, and 2-node RAC DB systems on virtual machines. If you need to provision a DB system for development or testing purposes, a special  fast-provisioning single-node virtual machine system is available.
+Functional Flow:
+
+![Functional Flow](docs/images/functional_flow.png "Functional Flow Diagram")
+
+Oracle Cloud Infrastructure provides single-node DB systems on virtual machines, and 2-node RAC DB systems on virtual machines. If you need to provision a DB system for development or testing purposes, a special fast-provisioning single-node virtual machine system is available.
 
 You can manage these systems by using the Console, the API, the Oracle Cloud Infrastructure CLI, the Database CLI (DBCLI), Enterprise Manager, or SQL Developer.
 
+
 #### Supported Database Editions and Versions
 
-All single-node Oracle RAC DB systems support the following Oracle Database editions:
+DBCS supports the following Oracle Database editions:
 
 - Standard Edition
 - Enterprise Edition
@@ -43,11 +47,11 @@ For fast provisioning of single-node virtual machine database systems (using Log
 
 ## Workload Types
 
-Database as a Service on VM supports the following Workload Types:
+Database Cloud Service on VM supports the following Workload Types:
 
-**DW**: Built for decision support and data warehouse workloads. Offers fast queries over large volumes of data.
+**Dataware House (DW):** Built for decision support and data warehouse workloads. Offers fast queries over large volumes of data.
+**Online Transaction Processing (OLTP):** Built for transactional workloads. Offers high concurrency for short-running queries and transactions.
 
-**OLTP**: Built for transactional workloads. Offers high concurrency for short-running queries and transactions.
 
 ## Prerequistes
 
@@ -55,16 +59,21 @@ The [OCloud Framework] (https://github.com/oracle-devrel/terraform-oci-ocloud-la
 
 ## Default Installation
 
+### Database Sizing
+
 DBaaS on VM ORM Stack includes three standard installation scenarios and a custom mode: 
-- Small: 19c Oracle Enterprise Edition Database System, 2 OCPUs and 512 GB of Storage
-- Medium: 19c Oracle Enterprise Edition Database System, 8 OCPUs and 4 TB of of Storage
-- Large: 19c Oracle Enterprise Edition Database System, 16 OCPUs and 8 TB of of Storage
+
+|  Configuration | Database Version | Oracle Database Software Edition | Shape | OCPUs | Storage(GB) |
+|---|---|---|---|---|---|
+| Small | 19 | Oracle Enterprise Edition | VM.Standard2.2 | 2 | 512 |
+| Medium | 19 | Oracle Enterprise Edition | VM.Standard2.8 | 8 | 4096 |
+| Large | 19 | Oracle Enterprise Edition | VM.Standard2.16 | 16 | 8192 |
 
 **Note:** Deployment Type Cluster demands Oracle Enterprise Extreem Performance Edition.
 
- It is expected that a compartment <organization>_<project>_database_compartment was provisioned through a landing zone stack. Details are retrieved directly from the remote stack. Therefore a default installation doesn't allow you to select a database compartment.
+ In order to provision a DBCS stack it is required that a DB compartment was provisioned as part of a landing zone stack whose details are retrieved directly from the remote stack.
 
-In addition to setting the size of the instances to small, medium or large, Deployment Type allows you to deploy a fast provisioned instance, a basic instance or a RAC cluster:
+In addition to setting the size of the instances to small, medium or large, **Deployment Type** allows you to deploy a fast provisioned instance, a basic instance or a RAC cluster:
 
 - Fast Provisioning
     - Storage Management Software: LVM
@@ -79,51 +88,55 @@ In addition to setting the size of the instances to small, medium or large, Depl
     - Auto Backup enabled: true
     - Node Count: 2
 
-**Note:** For a quick deployment make sure that LVM is used as Storage Management Software. Where a LVM based deployment takes around 20 minutes, a ASM based installation will take about an hour.
+**Note:** Note that deployment of a Fast Provisioning instance takes around 20 minutes, a Basic 1 hour and a Cluster 2 hours. 
+
+### Deployment Steps
 
 1. Navigate to OCI Resource Manager
 1. Create a Stack
 1. Load dbaas.zip
-1. Enter mandetory parameters
-    1. **Landing Zone Stack ID:** Copy and enter the landing zone's OCID
-    1. **Organization:** Used as part of a service label to identify landing zone resources
-    1. **Project:** Used as part of a service label to identify landing zone resources
-    1. **DB System Name:** User provided non-unique database system name
-    1. **Container Database Name:**  It must begin with an alphabetic character and can contain a maximum of eight alphanumeric characters. Special characters are not permitted. The unique database name is the DB name plus a random string. Accept the default if you don't have any other preferences.
-    1. **User-provided name of Database Home:** Accept the default if you don't have any other preferences
-    1. **Pluggable Database Name:** The name must begin with an alphabetic character and can contain a maximum of thirty alphanumeric characters. Special characters are not permitted. Pluggable database should not be same as database name
-    1. **DBaaS on VM Standard Configurations:** Select Small, Medium or Large configuration
-    1. **Deployment Type:** select Fast Provisioning, Basic, Cluster
-    1. **Public key for SSH access to the DB system:** Provide public part of a ssh key
-    1. **Admin Password:** Admin password for SYS, SYSTEM, PDB Admin and TDE Wallet
-    1. **Use existing DB subnet?:** Deploy the DBCS instance into an existing subnet. This option will skip the creation of a database 
-subnet.
+1. Enter mandetory parameters:
 
-**Note:** In case default installation templates for Configuration and Deployment Type do not fit your needs choose a custom configuration which allow you to fully customize your own DBaaS on VM Stack.
+|  Parameter |  Default Value |
+|---|---|
+| Landing Zone Stack ID | Copy and enter the landing zone's OCID |
+| Organization | Used as part of a service label to identify landing zone resources |
+| Project | Used as part of a service label to identify landing zone resources |
+| DB System Name | User provided non-unique database system name |
+| Container Database Name | It must begin with an alphabetic character and can contain a maximum of eight alphanumeric characters. Special characters are not permitted. The unique database name is the DB name plus a random string. Accept the default if you don't have any other preferences |
+| User-provided name of Database Home | Accept the default if you don't have any other preferences |
+| Pluggable Database Name | The name must begin with an alphabetic character and can contain a maximum of thirty alphanumeric characters. Special characters are not permitted. Pluggable database should not be same as database name |
+| DBaaS on VM Standard Configuration | Select Small, Medium or Large configuration |
+| Deployment Type | Select Fast Provisioning, Basic, Cluster |
+| Public key for SSH access to the DB system | Provide public part of a ssh key |
+| Admin Password | Admin password for SYS, SYSTEM, PDB Admin and TDE Wallet |
+| Use existing DB subnet? | Deploy the DBCS instance into an existing subnet. This option will skip the creation of a database 
+subnet |
 
-**Default Parameter**
+**Note:** If the default installation templates for **Configuration** and **Deployment Type** do not fit your needs choose a custom configuration which allow you to fully customize your own DBCS on VM Stack.
+
+**Default Parameter Values**
 
 **Note:** <service label> combines the first characters of the  <organization> with the first 5 characters of the <project> label.
 
-- **Database Compartment:** <service label>_database_compartment
-- **Availability Domain:** AD-1
-- **Node Count:** 1
-- **Cluster Name:** <service>rac if Node Count = 2 and Cluster Name is not set
-- **Oracle Database Software Edition:** ORACLE_STANDARD
-- **Storage Management Software:** ASM
-- **License Type:** LICENSE_INCLUDED
-- **Network Compartment:** <service label>_network_compartment
-- **Database Client VCN:** <service label>_1_vcn
-- **Database Client Subnet:** <service label>_db_client_subnet
-- **Security List:** <service label>_db_client_security_list
-- **Hostname Prefix:** oracledb<project>
-- **Fault Domain:** FAULT-DOMAIN-1
-- **Timezone:** UTC
-- **Database Version:** 19.0.0.0 (Corresponds to the latest 19c version)
-- **Workload Type:** OLTP
-- **Automatic Backups:** Disabled
-- **Character Set:** AL32UTF8
-- **National Character Set:** AL16UTF16
+|  Parameter |  Default Value |
+|---|---|
+| Database Compartment  | [service label]_database_compartment |
+| Availability Domain | AD-1 |
+| Node Count  | 1 |
+| Cluster Name | [service]rac if Node Count = 2 and Cluster Name is not set |
+| Oracle Database Software Edition | ORACLE_STANDARD |
+| Storage Management Software | ASM |
+| License Type | LICENSE_INCLUDED |
+| Hostname Prefix | oracledb[project] |
+| Fault Domain | FAULT-DOMAIN-1 |
+| Timezone | UTC |
+| Database Version | 19.0.0.0 (Corresponds to the latest 19c version) |
+| Workload Type | OLTP |
+| Automatic Backups | Disabled |
+| Character Set | AL32UTF8 |
+| National Character Set | AL16UTF16 |
+
 
 ## Parameter Reference
 
@@ -262,7 +275,7 @@ Connection strings to connect to the database's administration service. For Orac
 | Easy Connect | cdbDefault | oracledb.db.lndzntst0vcfra.oraclevcn.com:1521/cdb01_fra1nv.db.lndzntst0vcfra.oraclevcn.com |
 | Long | cdbIpDefault | (DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.2.161)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=cdb01_fra1nv.db.lndzntst0vcfra.oraclevcn.com))) |
 
-**Note:** The Stack output does not display the pdb access strings however in the table below you can find examples:
+**Note:** The stack output does not display the pdb access strings however in the table below you can find examples:
 
 |Format | Output Name | Connection String Example |
 | ---  | ---     | --- |
@@ -271,7 +284,72 @@ Connection strings to connect to the database's administration service. For Orac
 
 ## Validate 
 
-1. Use sqlplus or sqlcl to connect to CDB or PDB via Bastion Service which was deployed as part of the Landing Zone. Check the output for the appropriate connect string.
+Use sqlplus, sqlcl or sqldeveloper to connect to CDB or PDB via Bastion Service which was deployed as part of the Landing Zone. Check the output for the appropriate connect string.
+
+Bastion Session:
+
+| Protocol | Session type | IP Address | Port | Maximum session time-to-live (min) | |
+|---|---|---|---|---|---|
+| ssh | SSH Port Forwarding Session | Host IP | 22 | 1800 | ssh access to database node(s) |
+| sqlnet | SSH Port Forwarding Session | Host IP | 1521 | 1800 | sqlplus, sqlcl or sqldeveloper |
+| em | SSH Port Forwarding Session | Host IP | 5500 | 1800 | Oracle Enterprise Manager Database Express |
+
+**SSH:**
+
+Once you created an Bastion ssh session, copy the SSH command from the console to create an SSH tunnel.
+
+```
+ssh -i [private key file] -N -L <local port>:10.0.0.147:22 -p 22 [bastion session OCID]@host.bastion.eu-frankfurt-1.oci.oraclecloud.com
+```
+
+To ssh to the DB Node use the following command:
+
+```
+ssh -i [private key file] localhost -p opc@<local port>
+```
+
+***sqldeveloper:***
+
+Once you created an Bastion sql session, copy the SSH command from the console to create an SSH tunnel.
+
+```
+ssh -i [private key file] -N -L [local port]:10.0.0.147:1521 -p 22 [bastion session OCID]@host.bastion.eu-frankfurt-1.oci.oraclecloud.com
+```
+
+Open sqldeveloper and create a new database connection:
+
+| Parameter | Value |
+|---|---|
+| Username | sys |
+| Password | admin password |
+| Role | SYSDBA |
+| Connection Type | Basic |
+| Hostname | localhost |
+| Port | [local sql port] |
+| Service Name | SERVICE_NAME from DBCS output |
+
+**Oracle Enterprise Manager Database Express (19c):**
+
+ssh to db node and open port 5500 in the host firewall.
+
+```
+sudo su iptables -I INPUT -p tcp -m tcp --dport 5500 -j ACCEPT
+suod service iptables save
+sudo service iptables reload
+sudo iptables -L -n|grep 5500
+
+```
+
+Once you created an Bastion em session, copy the SSH command from the console to create an SSH tunnel.
+
+```
+ssh -i [private key file] -N -L [local port]:10.0.0.147:5500 -p 22 [bastion session OCID]@host.bastion.eu-frankfurt-1.oci.oraclecloud.com
+```
+
+Open a web browser and navigate to https://localhost:[local port]/em .
+
+For addition information to connect to other Database versions, check https://docs.oracle.com/en-us/iaas/Content/Database/Tasks/monitoringDB.htm
+
 
 ## Terraform Code
 

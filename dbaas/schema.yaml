@@ -1,8 +1,11 @@
+# Copyright (c) 2020 Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
 # Title shown in Application Information tab.
-title: "Database as a Service on VM Schema"
+title: "Database Cloud Service on VM Stack"
 # Sub Title shown in Application Information tab.
-description: "" 
-informationalText: "The Stack deploys a Database System on VM with a single pluggable Database.
+description: "The Stack deploys a Database Cloud System on VM" 
+informationalText: "The Stack deploys a Database Cloud System on VM.
 A set of three configuration templates are available for typical Database System installation use cases. Small: 19c Oracle Enterprise Edition, Single-Node, 2 OCPUs and 512 GB Storage
 , Medium: 19c Oracle Enterprise Edition, Single-Node, 8 OCPUs and 4 TB Storage and Large: 19c Oracle Enterprise Edition, Single-Node, 16 OCPUs and 8 TB Storage.
 Refer to the Database as a Service on VM stack documentation for further options."
@@ -32,7 +35,6 @@ variableGroups:
 
   - title: "Basic Database System Configuration"
     variables:
-      #- ${service}
       - ${organization}
       - ${project}
       - ${db_system_display_name}

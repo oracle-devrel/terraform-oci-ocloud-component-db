@@ -1,3 +1,7 @@
+# Copyright (c) 2020 Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+# Default configurations
 # Small Configuration
 # db_system_shape = VM.Standard2.2
 # db_system_data_storage_size_in_gb = 512
@@ -10,14 +14,11 @@
 # db_system_shape = VM.Standard2.16
 # db_system_data_storage_size_in_gb = 8192
 
- output "subnet_domains" {
-     value = var.use_existing_subnet ? var.subnet_id : module.db_domain[0].subnet.id
- }
-
 locals {
     db_vcn_id = try(data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_vcn.id,var.vcn_id)
     db_compartment_id = try(data.terraform_remote_state.external_stack_remote_state.outputs.db_compartment.id,var.db_compartment_id)
     db_subnet_id = var.use_existing_subnet ? var.subnet_id : module.db_domain[0].subnet.id
+    # Create a new subnet before deploying a DB instance or add the resource into an existing subnet
     create_subnet = var.use_existing_subnet ? 0 : 1
     db_nsg_id = length(var.db_system_nsg_id) > 0 ? tolist(var.db_system_nsg_id) : null
     db_system_shape = var.db_config == "Small" ? "VM.Standard2.2" : var.db_config == "Medium" ? "VM.Standard2.8" : var.db_config == "Large" ? "VM.Standard2.16" : var.db_system_shape
