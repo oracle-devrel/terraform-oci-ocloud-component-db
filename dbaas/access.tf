@@ -36,7 +36,7 @@ resource "oci_bastion_session" "ssh" {
   }
   display_name                                 = "${data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[count.index].hostname}_ssh"
   key_type                                     = "PUB"
-  session_ttl_in_seconds                       = 1800
+  session_ttl_in_seconds                       = 10800
 }
 
 resource "oci_bastion_session" "sqlnet" {
@@ -53,7 +53,7 @@ resource "oci_bastion_session" "sqlnet" {
   }
   display_name                                 = "${data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[count.index].hostname}_sqlnet"
   key_type                                     = "PUB"
-  session_ttl_in_seconds                       = 1800
+  session_ttl_in_seconds                       = 10800
 }
 
 resource "oci_bastion_session" "em" {
@@ -70,5 +70,5 @@ resource "oci_bastion_session" "em" {
   }
   display_name                                 = "${data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[count.index].hostname}_em"
   key_type                                     = "PUB"
-  session_ttl_in_seconds                       = 1800
+  session_ttl_in_seconds                       = 10800
 }

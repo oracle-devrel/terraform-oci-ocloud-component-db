@@ -24,7 +24,8 @@ module "db_domain" {
   bastion  = {
     create            = true # Determine whether a bastion service will be deployed and attached
     client_allow_cidr = [ data.terraform_remote_state.external_stack_remote_state.outputs.net_segment_1_anywhere ]
-    max_session_ttl   = 1800
+    #max_session_ttl   = 1800
+    max_session_ttl   = 10800
   }
   tcp_ports = {
     // [protocol, source_cidr, destination port min, max]

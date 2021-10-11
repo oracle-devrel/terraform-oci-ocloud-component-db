@@ -21,11 +21,11 @@ But in any case you should use the Oracle Database Cloud Service, if multistruct
 
 We call this  “Converged Database Model”.
 
-<img alt="Image1" src="docs/images/B1.png"> 
+<img alt="Image1" src="doc/images/B1.png"> 
 
 In cases where data is not to be stored in a database, several variants are available:
 
-<img alt="Image2" src="docs/images/B2.png">
+<img alt="Image2" src="doc/images/B2.png">
  
 ### Local NVMe
 This storage is used extremely high performance requirements. NVMe storage is directly assigned to either a so-called bare metal or a virtual compute instance. If you want to store or archive data permanently, you will transfer such data to block or object storage for backup purposes, for example, after processing by an application has been completed.
@@ -43,7 +43,7 @@ At the same time, object storage is very cost-effective.
 ### Archive Storage
 Archive storage behaves similarly to object storage, but is even more cost-effective. Archive storage is used for data that is rarely read.
  
-<img alt="Image3" src="docs/images/B3.png">
+<img alt="Image3" src="doc/images/B3.png">
 
 ### Data does not have to be held "either-or"
 One of the great advantages of Oracle Cloud Infrastructure is the simultaneous use of data e.g. in Object Storage and in the Database. For example, 
@@ -51,7 +51,7 @@ One of the great advantages of Oracle Cloud Infrastructure is the simultaneous u
 •	You can create joins between object storage files and database tables. 
 •	You can use partitioned tables, where the partitions are located both in the Database and in the Object Storage.
  
-<img alt="Image4" src="docs/images/B4.png">
+<img alt="Image4" src="doc/images/B4.png">
 
 
 ## Sample DB Stacks

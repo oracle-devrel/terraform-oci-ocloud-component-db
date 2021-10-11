@@ -1,3 +1,49 @@
-// see https://github.com/oracle-devrel/action-release-zip-maker for docs
+// // see https://github.com/oracle-devrel/action-release-zip-maker for docs
+// [
+// ]
+
 [
-]
+    {
+      "action": "create_zip",
+      "file_name": "ocloud-dbaas.zip",
+      "files": [
+        {
+          "src_pattern": "dbaas/*.tf",
+          "dst_path": ".",
+          "exclude": [ ] 
+        },
+        {
+          "src": "LICENSE"
+        },
+        {
+          "src": "dbaas/schema.yaml",
+          "dst_path": "."
+        }
+      ]
+    },
+    {
+      "action": "upload_file",
+      "file_name": "ocloud-dbcs.zip"
+    },
+    {
+      "action": "create_zip",
+      "file_name": "ocloud-adb_s.zip",
+      "files": [
+        {
+          "src_pattern": "adb_s/*.tf",
+          "dst_path": ".",
+          "exclude": [ ] 
+        },
+        {
+          "src": "LICENSE"
+        },
+        {
+          "src": "adb_s/schema.yaml"
+        }
+      ]
+    },
+    {
+      "action": "upload_file",
+      "file_name": "ocloud-adb_s.zip"
+    }
+  ]
