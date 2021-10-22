@@ -13,7 +13,7 @@
 # DB_BACKUP: Create a new database by restoring from a backup
 
 #Required
-#variable "tenancy_ocid" {}
+variable "tenancy_ocid" {}
 
 variable "availability_domains" {
     type = string
@@ -32,22 +32,28 @@ variable "stack_id" {
     description = "Landing Zone Stack OCID"
 }
 
-# variable "service" {
-#   description = "Common Label used with all related resources"
-#   type        = string
-#   # no default value, asking user to explicitly set this variable's value. see codingconventions.adoc  
-# }
+variable "overwrite_project" {
+    description = "Overwrite Organization, Project and Environment Label?"
+    type = bool
+    default = false
+}
 
 variable "organization" {
   description = "Common Label used with all related resources"
   type        = string
-  # no default value, asking user to explicitly set this variable's value. see codingconventions.adoc  
+  default = null  
 }
 
 variable "project" {
   description = "Common Label used with all related resources"
   type        = string
-  # no default value, asking user to explicitly set this variable's value. see codingconventions.adoc  
+  default = null  
+}
+
+variable "environment" {
+  description = "Common Label used with all related resources"
+  type        = string
+  default = null
 }
 
 variable "db_system_db_home_database_admin_password" {

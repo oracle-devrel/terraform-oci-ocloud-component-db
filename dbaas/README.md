@@ -94,8 +94,7 @@ In addition to setting the size of the instances to small, medium or large, **De
 |  Parameter |  Default Value |
 |---|---|
 | Landing Zone Stack ID | Copy and enter the landing zone's OCID |
-| Organization | Used as part of a service label to identify landing zone resources |
-| Project | Used as part of a service label to identify landing zone resources |
+| Overwrite Organization, Project and Environment? | By default Organization, Project and Environment are pulled from the landing zone stack. |
 | DB System Name | User provided non-unique database system name |
 | Container Database Name | It must begin with an alphabetic character and can contain a maximum of eight alphanumeric characters. Special characters are not permitted. The unique database name is the DB name plus a random string. Accept the default if you don't have any other preferences |
 | User-provided name of Database Home | Accept the default if you don't have any other preferences |

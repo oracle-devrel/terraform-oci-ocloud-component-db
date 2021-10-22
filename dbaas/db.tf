@@ -63,6 +63,9 @@ output "connection_strings" {
 
 # In order to print all pdb connection strings find the pdb we just created  
 data "oci_database_pluggable_databases" "dbaas_db_system_pdbs" {
+    depends_on = [
+      oci_database_db_system.dbaas_db_system
+    ]
     compartment_id = local.db_compartment_id
     pdb_name = var.db_system_db_home_database_pdb_name
     state = "AVAILABLE"

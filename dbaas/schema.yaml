@@ -33,10 +33,15 @@ variableGroups:
     variables:
       - ${stack_id}
 
-  - title: "Basic Database System Configuration"
+  - title: "Stack Identifier"
     variables:
+      - ${overwrite_project}
       - ${organization}
       - ${project}
+      - ${environment}
+
+  - title: "Basic Database System Configuration"
+    variables:
       - ${db_system_display_name}
       - ${db_system_db_home_database_db_name}
       - ${db_system_db_home_display_name}
@@ -57,10 +62,6 @@ variableGroups:
   - title: "Use existing Subnet?"
     variables:
       - ${use_existing_subnet}
-
-  - title: "Network Information"
-    visible: use_existing_subnet
-    variables:
       - ${db_compartment_id}
       - ${nw_compartment_id}
       - ${vcn_id}
@@ -170,6 +171,7 @@ variableGroups:
       - ${db_system_db_home_database_freeform_tags}
       - ${db_system_db_home_defined_tags}
       - ${db_system_defined_tags}
+      - ${db_basic_config}
 
 variables:
 
@@ -202,24 +204,30 @@ variables:
   db_compartment_id:
     title: "Database Compartment"
     type: oci:identity:compartment:id
+    visible: use_existing_subnet
+
+  overwrite_project:
+    title: "Overwrite Organization, Project and Environment Labels"
+    type: boolean
+    description: "By default Organization, Project and Environment Labels are pulled from the landing zone stack. Check to overwrite these parameters"
 
   organization:
     title: "Organization"
     type: string
-    description: "Used as part of a service label to identify landing zone resources"
-    required: true
+    description: "Identifier for the organization or platform owner. Used as part of a service label to identify landing zone resources"
+    visible: overwrite_project
 
   project:
-    title: "Project"
+    title: "Project or Program"
     type: string
-    description: "Used as part of a service label to identify landing zone resources"
-    required: true
-  
-  # service:
-  #   title: "Service Label"
-  #   type: string
-  #   description: "Common Service Label to deploy DB to CIS Landing Zone"
-  #   required: true
+    description: "Identifier for the service delivery platform. Used as part of a service label to identify landing zone resources"
+    visible: overwrite_project
+
+  environment:
+    title: "Environment"
+    type: string
+    description: "Define the CI/CD process stage, e.g. dev, uat, prod. Used as part of a service label to identify landing zone resources"
+    visible: overwrite_project
 
   db_system_display_name:
     title: "Database System Name"
@@ -338,6 +346,7 @@ variables:
   nw_compartment_id:
     title: "Network Compartment"
     type: oci:identity:compartment:id
+    visible: use_existing_subnet
 
   vcn_id:
     title: "Database Client VCN"
@@ -345,6 +354,7 @@ variables:
     description: "VNC where the database client will be created"
     dependsOn:
       compartmentId: ${nw_compartment_id}
+    visible: use_existing_subnet
   
   subnet_id:
     title: "Database Client Subnet"
@@ -354,6 +364,7 @@ variables:
       compartmentId: ${db_compartment_id}
       vcnId: ${vcn_id}
       hidePublicSubnet: true
+    visible: use_existing_subnet
 
   db_system_nsg_id:
     title: "Database Network Security Group"
@@ -516,3 +527,6 @@ variables:
 
   db_system_defined_tags:
     type: string
+
+  db_basic_config:
+    type: object

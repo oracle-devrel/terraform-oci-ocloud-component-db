@@ -28,3 +28,20 @@ data "oci_bastion_bastions" "db_bastions" {
         values = [local.db_subnet_id]
   }
 }
+
+# Determine the init compartment's ocid, which is required for calling the db_domain module
+data "oci_identity_compartments" "init" {
+  compartment_id = var.tenancy_ocid
+  compartment_id_in_subtree = true
+  state          = "ACTIVE"
+  filter {
+    name   = "id"
+    #values = [local.db_compartment_id]
+    values = [ data.terraform_remote_state.external_stack_remote_state.outputs.db_compartment_id ]
+  } 
+}
+
+# Determine the init compartment's name.  
+data "oci_identity_compartment" "init_name" {
+  id = data.oci_identity_compartments.init.compartments[0].compartment_id
+}
