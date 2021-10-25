@@ -15,11 +15,11 @@ The following use case describes how to provision a DB System on VM through an O
 
 ## Database Cloud Service on VM Stack
 
-![Database System](docs/images/database_sys_vm.png "Database System Diagram")
+![Database System](doc/images/database_sys_vm.png "Database System Diagram")
 
 Functional Flow:
 
-![Functional Flow](docs/images/functional_flow.png "Functional Flow Diagram")
+![Functional Flow](doc/images/functional_flow.png "Functional Flow Diagram")
 
 Oracle Cloud Infrastructure provides single-node DB systems on virtual machines, and 2-node RAC DB systems on virtual machines. If you need to provision a DB system for development or testing purposes, a special fast-provisioning single-node virtual machine system is available.
 
