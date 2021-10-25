@@ -1,13 +1,12 @@
 // Copyright (c) 2020 Oracle and/or its affiliates.
 // Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-image::https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg[Deploy on Oracle Cloud, link="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-devrel/terraform-oci-ocloud-db/archive/refs/heads/main.zip"]
+[![Deploy on Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-devrel/terraform-oci-ocloud-db/archive/refs/heads/main.zip)
 
 # The OCloud Framework: Database Cloud Service on VM
 (Source: [OCI documentation] (https://docs.oracle.com/en-us/iaas/Content/Database/Concepts/overview.htm))
 
-image:https://img.shields.io/badge/license-UPL-green[link="LICENSE"]
-image:https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_terraform-oci-ocloud-db[Quality gate, link="https://sonarcloud.io/dashboard?id=oracle-devrel_terraform-oci-ocloud-db"]
+[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_terraform-oci-ocloud-db)](https://sonarcloud.io/dashboard?id=oracle-devrel_terraform-oci-ocloud-db)
 
 Oracle Infrastructure Cloud offers installation of DB system on VM (DBCS) and Exadata (ExaCS) which includes the hardware, storage software, and networking configuration required to run Oracle Databases in the Oracle cloud.
 
