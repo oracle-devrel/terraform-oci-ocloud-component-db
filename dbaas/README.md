@@ -1,5 +1,5 @@
-// Copyright (c) 2020 Oracle and/or its affiliates.
-// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+<!-- Copyright (c) 2020 Oracle and/or its affiliates.
+Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl. -->
 
 [![Deploy on Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-devrel/terraform-oci-ocloud-db/archive/refs/heads/main.zip)
 
