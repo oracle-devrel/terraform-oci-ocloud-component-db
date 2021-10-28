@@ -22,9 +22,9 @@ resource "oci_database_db_system" "dbaas_db_system" {
         recovery_window_in_days = var.db_system_db_home_database_db_backup_config_recovery_window_in_days
       }
 
-      #freeform_tags = {
-      #  "Department" = "Finance"
-      #}
+      freeform_tags = {
+        "framework" = "ocloud"
+      }
     }
 
     db_version   = var.db_system_db_home_db_version

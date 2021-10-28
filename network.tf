@@ -22,18 +22,30 @@ module "db_domain" {
   # 1-node virtual machine, 1 + 3 reserved in subnet = 4, /30 (4 IP addresses)
   # 2-node RAC virtual machine, (2 addresses * 2 nodes) + 3 for SCANs + 3 reserved in subnet = 10, /28 (16 IP addresses)
   subnet  = {
-    # Select the predefined name per index
+    # Select the predefined name per index. This will assign the entire allocated subnet CIDIR to the DB subnet.
     domain                      = element(keys(data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_subnets), 1)
-    # Select the predefined range per index
+    
+    # Select the predefined range per index. This will assign the entire allocated subnet CIDIR to the DB subnet.
+    # Alternatively use cidrsubnet() to cut out a smaller subnet, i.e.
+    # cidr_block = cidrsubnet(element(values(data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_subnets), 1),newbit,netnum)
+    # Example:
+    #     > cidrsubnets("10.0.0.128/26",2,2,2,2)
+    # tolist([
+    #   "10.0.0.128/28",  --->  cidrsubnet("10.0.0.128/26",2,0)
+    #   "10.0.0.144/28",  --->  cidrsubnet("10.0.0.128/26",2,1)
+    #   "10.0.0.160/28",  --->  cidrsubnet("10.0.0.128/26",2,2)
+    #   "10.0.0.176/28",  --->  cidrsubnet("10.0.0.128/26",2,3)
+    # ]) 
+    # For further details refer to https://www.terraform.io/docs/language/functions/cidrsubnet.html
     cidr_block                  = element(values(data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_subnets), 1)
     prohibit_public_ip_on_vnic  = true
     dhcp_options_id             = null
     route_table_id              = data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_osn_id
   }
   bastion  = {
-    create            = true # Determine whether a bastion service will be deployed and attached
-    client_allow_cidr = [ data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere ]
-    max_session_ttl   = 10800 # Sets time to live to the maximum of 3 hours
+    create            = false # Determine whether a bastion service will be deployed and attached
+    # client_allow_cidr = [ data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere ]
+    # max_session_ttl   = 10800 # Sets time to live to the maximum of 3 hours
   }
   tcp_ports = {
     // [protocol, source_cidr, destination port min, max]

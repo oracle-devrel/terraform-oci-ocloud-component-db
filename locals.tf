@@ -39,14 +39,21 @@ locals {
     db_system_db_home_database_db_backup_config_auto_backup_enabled = var.deployment_type == "Fast Provisioning" ? false : var.deployment_type == "Fast Provisioning" || var.deployment_type == "Cluster" ? true : var.db_system_db_home_database_db_backup_config_auto_backup_enabled
     # database nodes in the same subnet may not use the same hostname prefix. Adding the project label makes it unique to some extent
     db_system_hostname = format("%s%s",var.db_system_hostname,local.project)
-    # In case a DBCS instance is installed into an existing subnet we will use the existing bastion service to attach the sessions
-    db_bastion_id = local.create_subnet == 1 ? module.db_domain[0].bastion.id : length(data.oci_bastion_bastions.db_bastions.bastions) > 0 ? data.oci_bastion_bastions.db_bastions.bastions[0].id : null
+    # db_bastion_id = local.create_subnet == 1 ? (
+    #     module.db_domain[0].bastion.id : length(data.oci_bastion_bastions.db_bastions.bastions) > 0 ? (
+    #         data.oci_bastion_bastions.db_bastions.bastions[0].id : null))
+    # By default we use the Bastion Service that is instanciated through the landing zone. Only use the "local" Bastion if bastion create was set to true (See network.tf)
+    db_bastion_id = module.db_domain[0].bastion == null ? data.terraform_remote_state.external_stack_remote_state.outputs.app_domain_bastion.id : module.db_domain[0].bastion.id
 
     # By default DB Stack uses the same resource name prefix as the realted landing zone.
     # Set var.overwrite_project to true to overwrite organization, project and environment
     organization = var.overwrite_project ? var.organization : split("_", data.oci_identity_compartment.init_name.name)[0]
     project = var.overwrite_project ? var.organization : split("_", data.oci_identity_compartment.init_name.name)[1]
     environment = var.overwrite_project ? var.organization : split("_", data.oci_identity_compartment.init_name.name)[2]
+    # Change to 
+    # service_label = format("%s%s", lower(substr(local.project, 0, 5)), lower(substr(local.environment, 0, 3)))
+    # ?
+    # service_label used to name db resource parameters
     service_label = format("%s%s", lower(substr(local.organization, 0, 3)), lower(substr(local.project, 0, 5)))
 }
 

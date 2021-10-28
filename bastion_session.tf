@@ -8,18 +8,10 @@ data "oci_database_db_nodes" "dbaas_db_nodes" {
     state = "AVAILABLE"
 }
 
-# output "dbaas_db_nodes" {
-#   value = data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[*].db_node_id
-# }
-
 data "oci_core_private_ips" "db_private_ips_by_vnic" {
      count = local.db_system_node_count
      vnic_id = data.oci_database_db_nodes.dbaas_db_nodes.db_nodes[count.index].vnic_id
 }
-
-# output "dbaas_db_nodes_vnics" {
-#      value = data.oci_core_private_ips.db_private_ips_by_vnic
-# }
 
 resource "oci_bastion_session" "ssh" {
   count = local.db_system_node_count
