@@ -7,8 +7,9 @@ module "db_domain" {
     data.oci_identity_compartments.init,
     data.terraform_remote_state.external_stack_remote_state
   ]
-  #source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone/component/network_domain"
-  source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone//component/network_domain?ref=release"
+  source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone/component/network_domain"
+  # use release branch
+  #source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone//component/network_domain?ref=release"
   count = local.create_subnet
   config  = {
     service_id     = data.oci_identity_compartments.init.compartments[0].compartment_id
