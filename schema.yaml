@@ -179,6 +179,7 @@ variables:
     title: "Landing Zone Stack OCID"
     description: "By default Database is deployed within a database compartment which was created as part of the ocloud landing zone. Enter the stack's OCID."
     type: string
+    required: true
 
   db_config:
     title: "DBaaS on VM Standard Configurations"

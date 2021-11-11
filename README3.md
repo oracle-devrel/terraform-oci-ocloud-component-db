@@ -117,14 +117,14 @@ subnet |
 
 **Default Parameter Values**
 
-**Note:** <service label> combines the first characters of the  <organization> with the first 5 characters of the <project> label.
+**Note:** <service label> combines the first characters 5 of the  <project> with the first 3 characters of the <environment> label.
 
 |  Parameter |  Default Value |
 |---|---|
 | Database Compartment  | [service label]_database_compartment |
 | Availability Domain | AD-1 |
 | Node Count  | 1 |
-| Cluster Name | [service]rac if Node Count = 2 and Cluster Name is not set |
+| Cluster Name | [service label]rac if Node Count = 2 and Cluster Name is not set |
 | Oracle Database Software Edition | ORACLE_STANDARD |
 | Storage Management Software | ASM |
 | License Type | LICENSE_INCLUDED |
@@ -149,7 +149,7 @@ subnet |
 | Database Compartment | Compartment where the database resources will be created. |
 | Availability Domain | The availability domain where the DB system is located. By default `AD-1` is selected. |
 | Node Count | The number of nodes to launch for a 2-node RAC virtual machine DB system. Specify either `1` or `2`. |
-| Cluster Name | The cluster name 2-node RAC virtual machine DB systems. The cluster name must begin with an alphabetic character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not case sensitive. If Node Count is 2 and Cluster Name is not given set it defaults to `<service>-rac`. |
+| Cluster Name | The cluster name 2-node RAC virtual machine DB systems. The cluster name must begin with an alphabetic character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not case sensitive. If Node Count is 2 and Cluster Name is not given set it defaults to `<service label>rac`. |
 | Oracle Database Software Edition | The Oracle Database edition that applies to all the databases on the DB system. Supported values are: <br> - Standard Edition<br> - Enterprise Edition<br> - Enterprise Edition - High Performance<br> - Enterprise Edition - Extreme Performance<br><br>Note: The database edition depends on the database system configuration, i.e. a 2-node RAC deployment demands "Enterprise Edition - Extreme Performance". |
 | Storage Management Software | The storage option used in DB system. ASM - Automatic storage management, `LVM` - Logical Volume management. Where `ASM` is default, fast provisioning only can be done with `LVM`. |
 | License Type | The Oracle license model that applies to all the databases on the DB system. Options are "Bring Your Own License" (`BYOL`) or "License included" (`LICENSE_INCLUDED`). The default is `LICENSE_INCLUDED`. |
