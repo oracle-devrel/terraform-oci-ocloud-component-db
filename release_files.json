@@ -1,7 +1,7 @@
 [
     {
       "action": "create_zip",
-      "file_name": "ocloud-dbcs.zip",
+      "file_name": "ocloud-dbcs-latest.zip",
       "files": [
         {
           "src_pattern": "*.tf",
@@ -17,6 +17,6 @@
     },
     {
       "action": "upload_file",
-      "file_name": "ocloud-dbcs.zip"
+      "file_name": "ocloud-dbcs-latest.zip"
     }
   ]
