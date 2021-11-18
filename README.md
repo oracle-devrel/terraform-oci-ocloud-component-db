@@ -194,7 +194,7 @@ Connection strings to connect to the database's administration service. For Orac
 | Easy Connect | cdbDefault | oracledb.db.lndzntst0vcfra.oraclevcn.com:1521/cdb01_fra1nv.db.lndzntst0vcfra.oraclevcn.com |
 | Long | cdbIpDefault | (DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.2.161)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=cdb01_fra1nv.db.lndzntst0vcfra.oraclevcn.com))) |
 
-**Note:** The stack output does not display the pdb access strings during initial deployment however in the table below you can find examples:
+**Note:** PDB connection strings are only printed for Database Version greater than 19.
 
 |Format | Output Name | Connection String Example |
 | ---  | ---     | --- |

@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-resource "oci_database_db_system" "dbaas_db_system" {
+resource "oci_database_db_system" "dbcs_db_system" {
   availability_domain = length(var.availability_domains) > 0 ? var.availability_domains : data.oci_identity_availability_domains.ADs.availability_domains[0].name
   compartment_id      = local.db_compartment_id
   database_edition    = local.db_system_database_edition
@@ -56,22 +56,25 @@ resource "oci_database_db_system" "dbaas_db_system" {
   #}
 }
 
+# Get CDB connection strings
 output "connection_strings" {
   description = "Database Connection Strings"
-  value = oci_database_db_system.dbaas_db_system.db_home[0].database[0].connection_strings[0].all_connection_strings
+  value = oci_database_db_system.dbcs_db_system.db_home[0].database[0].connection_strings[0].all_connection_strings
 }
 
-# In order to print all pdb connection strings find the pdb we just created  
-data "oci_database_pluggable_databases" "dbaas_db_system_pdbs" {
+# In order to print all pdb connection strings find the pdb we just created. Note that pdbs are only supported for DB version >= 19.
+# Therefore we need to skip this block for database versions less then 19.
+data "oci_database_pluggable_databases" "dbcs_db_system_pdbs" {
     depends_on = [
-      oci_database_db_system.dbaas_db_system
+      oci_database_db_system.dbcs_db_system
     ]
-    compartment_id = local.db_compartment_id
+    count = tonumber(split(".", oci_database_db_system.dbcs_db_system.db_home[0].db_version)[0]) >= 19 ? 1 : 0
     pdb_name = var.db_system_db_home_database_pdb_name
+    database_id = oci_database_db_system.dbcs_db_system.db_home[0].database[0].id
     state = "AVAILABLE"
 }
 
 output "pdb_connection_strings" {
   description = "Pluggable Database Connection Strings"
-  value = try(data.oci_database_pluggable_databases.dbaas_db_system_pdbs.pluggable_databases[0].connection_strings[0].all_connection_strings,"")
+  value = try(data.oci_database_pluggable_databases.dbcs_db_system_pdbs[0].pluggable_databases[0].connection_strings[0].all_connection_strings,"")
 } 
