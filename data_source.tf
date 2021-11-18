@@ -36,8 +36,7 @@ data "oci_identity_compartments" "init" {
   state          = "ACTIVE"
   filter {
     name   = "id"
-    #values = [local.db_compartment_id]
-    values = [ data.terraform_remote_state.external_stack_remote_state.outputs.db_compartment_id ]
+    values = [local.db_compartment_id]
   } 
 }
 
