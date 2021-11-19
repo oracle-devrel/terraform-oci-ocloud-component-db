@@ -50,3 +50,5 @@ Temporary Items
 *.lock.hcl
 *.t_
 *.drawio
+*.bat
+listfile.txt
