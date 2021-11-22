@@ -57,6 +57,7 @@ resource "oci_bastion_session" "sqlnet" {
   session_ttl_in_seconds                       = 1800
 }
 
+# Uncomment to let terraform create a session for Oracle Enterprise Manager Database Express access
 # resource "oci_bastion_session" "em" {
 #   count = length(data.oci_core_private_ips.db_private_ips_by_vnic.private_ips)
 #   bastion_id                                   = local.db_bastion_id

@@ -8,8 +8,7 @@ module "db_domain" {
     data.terraform_remote_state.external_stack_remote_state
   ]
   source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone/component/network_domain"
-  # use release branch
-  #source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone//component/network_domain?ref=release"
+
   count = local.create_subnet
   config  = {
     service_id     = data.oci_identity_compartments.init.compartments[0].compartment_id
@@ -51,7 +50,11 @@ module "db_domain" {
     max_session_ttl   = null
   }
   tcp_ports = {
-    // [protocol, source_cidr, destination port min, max]
+    # [protocol, source_cidr, destination port min, max]
+    # tcp, 1521 - Default SQL*Net port for DBCS
+    # tcp, 1522 - Default SQL*Net port for Autonomous DB
+    # tcp, 5500 - Oracle Enterprise Manager Database Express
+    # tcp, 6200 - Port for ONS, used to publish and subscribe service for communicating information about all Fast Application Notification (FAN) events
     ingress  = [
       ["ssh",   data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere,  22,  22], 
       ["http",  data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere,  80,  80], 
@@ -63,8 +66,5 @@ module "db_domain" {
   }
 }
 
-# output "db_domain_subnet"        { value = module.db_domain[0].subnet_id }
-# output "db_domain_security_list" { value = module.db_domain[0].seclist_id }
 output "db_domain_subnet"        { value = local.db_subnet_id }
-# output "db_domain_security_list" { value = module.db_domain[0].seclist_id }
 // --- database tier --- //
