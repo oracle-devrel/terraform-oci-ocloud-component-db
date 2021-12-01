@@ -23,7 +23,10 @@ output "dbnode_private_ip_addresses" {
 }
 
 resource "oci_bastion_session" "ssh" {
-  count = length(data.oci_core_private_ips.db_private_ips_by_vnic.private_ips)
+  depends_on = [
+      oci_database_db_system.dbcs_db_system
+  ]
+  count = var.db_system_node_count
   bastion_id                                   = local.db_bastion_id
   key_details {
     public_key_content                         = var.db_system_ssh_public_keys
@@ -41,7 +44,10 @@ resource "oci_bastion_session" "ssh" {
 }
 
 resource "oci_bastion_session" "sqlnet" {
-  count = length(data.oci_core_private_ips.db_private_ips_by_vnic.private_ips)
+  depends_on = [
+    oci_database_db_system.dbcs_db_system
+  ]
+  count = var.db_system_node_count
   bastion_id                                   = local.db_bastion_id
   key_details {
     public_key_content                         = var.db_system_ssh_public_keys

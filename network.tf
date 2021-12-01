@@ -8,7 +8,7 @@ module "db_domain" {
     data.terraform_remote_state.external_stack_remote_state
   ]
   source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone/component/network_domain"
-
+  #source = "github.com/oracle-devrel/terraform-oci-ocloud-landing-zone//component/network_domain?ref=7steps"
   count = local.create_subnet
   config  = {
     service_id     = data.oci_identity_compartments.init.compartments[0].compartment_id
@@ -51,14 +51,13 @@ module "db_domain" {
   }
   tcp_ports = {
     # [protocol, source_cidr, destination port min, max]
+    # tcp, 22, ssh access to database nodes
     # tcp, 1521 - Default SQL*Net port for DBCS
-    # tcp, 1522 - Default SQL*Net port for Autonomous DB
+    # tcp, 1522 - Default SQL*Net port for Autonomous DB with private endpoint
     # tcp, 5500 - Oracle Enterprise Manager Database Express
     # tcp, 6200 - Port for ONS, used to publish and subscribe service for communicating information about all Fast Application Notification (FAN) events
     ingress  = [
       ["ssh",   data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere,  22,  22], 
-      ["http",  data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere,  80,  80], 
-      ["https", data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere, 443, 443],
       ["tcp", data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere, 1521, 1522],
       ["tcp", data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere, 5500, 5500],
       ["tcp", data.terraform_remote_state.external_stack_remote_state.outputs.service_segment_anywhere, 6200, 6200]
